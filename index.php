@@ -1,9 +1,10 @@
 <?php
+	$_SESSION['LocalRoot'] = $_SERVER['DOCUMENT_ROOT'] . "/rcc-listings-master"; // fix for localhost dev
+    include_once $_SESSION['LocalRoot'] .'/libraries/connect.php';
 
-    include_once $_SERVER['DOCUMENT_ROOT'].'/libraries/connect.php';
-
-    if($db){
+    if($db !== FALSE){
         $dbStatus = 'The database is connected.';
+		include_once $_SESSION['LocalRoot'] . "/models/jobsPreview.php"; // finds the last three jobs listed
     } else {
     	$dbStatus = 'The database is NOT connected.';
     }
@@ -25,27 +26,41 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width" />
 	<title><?php echo $title; ?></title>
-	<link rel="stylesheet" href="/css/foundation.min.css">
-	<link rel="stylesheet" href="/css/default.css">
-	<script src="/js/foundation/modernizr.foundation.js"></script>
+	<link rel="stylesheet" href="css/foundation.min.css">
+	<link rel="stylesheet" href="css/default.css">
+	<script src="js/foundation/modernizr.foundation.js"></script>
 </head>
 
 <body>
 
-	<div class="row">
-		<div class="twelve columns panel">
-			<h2><?php echo $title; ?></h2>
-			<p><?php echo $dbStatus; ?></p>
-		</div>
-	</div>
 
-	<!-- TODO: seperate the following menu into partials/menu.php, and include it here. -->
-	<div id="menu" class="row">
-		<ul class="nav-bar">
-			<li class="active"><a href="/index.php">Home</a></li>
-			<li class=""><a href="/blogs.php">Blog</a></li>
-		</ul>
+    <?php include_once $_SESSION['LocalRoot'] .'/partials/titleblock.php'; ?>
+    <?php include_once $_SESSION['LocalRoot'] .'/partials/menu.php'; ?>
+    <div class="row">
+    <div class="twelve columns">
+    	<div class="three columns offset-by-nine clearing-main-right">
+        	<div class="panel">
+        
+    		<h4>Latest Job Listings</h4>
+        	<?php 
+			foreach ($jobs as $job){ ?>
+				<div class="row">
+					
+						<h5><a href="Jobs.php"><?php echo $job['title']; ?></a></h5>
+						<a href="Jobs.php"><strong>Listed:</strong> <?php echo $job['listed']; ?></a>					
+					
+				</div>
+			<?php } ?> 
+            </div>
+            <h4>Please Note:</h4>
+            	<div class="alert-box">
+                	<p>Jobs and projects posted here are for registered RCC Student developers only.</p>
+                </div>
+        
+    	</div>
+    </div>
 	</div>
+	
 
 </body>
 </html>

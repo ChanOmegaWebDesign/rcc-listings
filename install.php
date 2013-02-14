@@ -44,6 +44,37 @@
 		die(printError($e->getMessage()));
 	}
 
+	// Arleigh's job table:
+
+    try{
+	    $sql = "DROP TABLE IF EXISTS jobs";
+		$result = $db->query($sql);
+		var_dump($result);
+	} catch (PDOException $e) {
+		die($e->getMessage());
+	}
+
+	try{
+		$sql = "CREATE TABLE IF NOT EXISTS jobs (
+			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			title VARCHAR(200) NOT NULL,
+			description TEXT NOT NULL,
+			listed TIMESTAMP DEFAULT NOW(),
+			company VARCHAR(30),
+			contact VARCHAR(30) NOT NULL,
+			location VARCHAR(30) NOT NULL,
+			telecommute VARCHAR(5) NOT NULL,
+			contact_email VARCHAR(60) NOT NULL,
+			pays VARCHAR(30),
+			hired DATE,
+			dev_id INT		
+		)";
+		$result = $db->query($sql);
+		var_dump($result);
+	} catch (PDOException $e) {
+		die($e->getMessage());
+	}
+
 	/* Put your SQL installation code here:
 
     try{
@@ -66,8 +97,30 @@
 
 	*/
 
-	// Place any templrary sample data here:
 
+	// Place any templrary sample data here:
+// Temporary sample job data
+
+    try{
+	    $stuff = "<p>First Job description! With lots and lots of text to fill up lots and lots of space so we can see what happens. We want the main job board to truncate this stuff after so many characters, so that you have to click the link to read more.</p>";
+		$sql = "INSERT INTO jobs (title, description, company, contact, contact_email, pays) "
+			. "VALUES ('My First Job Title', '" . $stuff . "', 'Name of Sample Business', 'Contact', 'contact@sample.com', '\$500.00')";
+		$result = $db->query($sql);
+		var_dump($result);
+	} catch (PDOException $e) {
+		die($e->getMessage());
+	}
+
+	try{
+	    $sql = "INSERT INTO jobs (title, description, company, contact, contact_email, pays) "
+			. "VALUES ('My Second Job Title', '<p>Second Job description!</p>', 'Name of Business 2', 'Contact 2', 'contact_2@sample_2.com', 'maybe')";
+		$result = $db->query($sql);
+		var_dump($result);
+	} catch (PDOException $e) {
+		die($e->getMessage());
+	}
+	
+// samle blog data
     try{
 	    $sql = "INSERT INTO blogs (title, content) VALUES ('My First Blog Title', '<p>Blog Content!</p>')";
 		$result = $db->query($sql);
